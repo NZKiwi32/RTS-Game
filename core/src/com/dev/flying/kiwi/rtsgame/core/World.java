@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.dev.flying.kiwi.rtsgame.components.ImageDrawableComponent;
 import com.dev.flying.kiwi.rtsgame.components.PositionComponent;
+import com.dev.flying.kiwi.rtsgame.components.VelocityComponent;
 
 /**
  * World
@@ -33,7 +34,8 @@ public class World {
 
         player
                 .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("player.jpg"))))
-                .add(new PositionComponent(10, 10));
+                .add(new PositionComponent(10, 10))
+                .add(new VelocityComponent(10,10));
 
 //
 //        img = new Texture(Gdx.files.internal("player.jpg"));
