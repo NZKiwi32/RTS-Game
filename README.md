@@ -4,4 +4,4 @@ This project aims to build a game shippable to android/html/desktop using the li
 * Ashley - Component Entity System
 
 Initially this project will port the components and systems from the other Ashley project for reuse (eventually split into there own repo). From this repo:
-https://github.com/NZKiwi32/BasicAndroidGame
+* https://github.com/NZKiwi32/BasicAndroidGame
