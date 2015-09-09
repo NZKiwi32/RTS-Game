@@ -1,2 +1,7 @@
-# RTS-Game
-Test Game attempting to make a game integrating the multi-platform LibGDX and Ashley ECS
+# Game
+This project aims to build a game shippable to android/html/desktop using the libraries:
+LibGDX - Multiplatform Game Framework
+Ashley - Component Entity System
+
+Initially this project will port the components and systems from the other Ashley project for reuse (eventually split into there own repo). From this repo:
+https://github.com/NZKiwi32/BasicAndroidGame
