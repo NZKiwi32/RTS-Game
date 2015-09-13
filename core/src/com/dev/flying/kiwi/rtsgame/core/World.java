@@ -4,9 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.dev.flying.kiwi.rtsgame.components.ImageDrawableComponent;
-import com.dev.flying.kiwi.rtsgame.components.PositionComponent;
-import com.dev.flying.kiwi.rtsgame.components.VelocityComponent;
+import com.dev.flying.kiwi.rtsgame.components.*;
 
 /**
  * World
@@ -35,7 +33,10 @@ public class World {
         player
                 .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("player.jpg"))))
                 .add(new PositionComponent(10, 10))
-                .add(new VelocityComponent(10,10));
+                .add(new VelocityComponent(0,0))
+                .add(new PlayerControlledComponent())
+                .add(new SpeedComponent(10000));
+
 
 //
 //        img = new Texture(Gdx.files.internal("player.jpg"));
