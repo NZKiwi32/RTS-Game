@@ -5,6 +5,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dev.flying.kiwi.rtsgame.core.KeyboardInput;
 import com.dev.flying.kiwi.rtsgame.core.World;
@@ -14,7 +15,7 @@ import com.dev.flying.kiwi.rtsgame.systems.MovementSystem;
 
 public class RTSGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
+	private Texture background;
 
 	private PooledEngine engine;
 	private World world;
@@ -25,6 +26,9 @@ public class RTSGame extends ApplicationAdapter {
 		// Gdx initialisation
 		batch = new SpriteBatch();
 		keyboardInput = new KeyboardInput();
+
+		background = new Texture(Gdx.files.internal("GrassSeamless.jpg"));
+        background.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 
 		// Ashley initialisation
 		this.engine = new PooledEngine();
@@ -38,6 +42,14 @@ public class RTSGame extends ApplicationAdapter {
 
 	@Override
 	public void render() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+
+        batch.draw(background, 0, 0, 1024, 768);
 		engine.update(Gdx.graphics.getDeltaTime());
+
+        batch.end();
 	}
 }

@@ -4,14 +4,10 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Array;
 import com.dev.flying.kiwi.rtsgame.components.ImageDrawableComponent;
 import com.dev.flying.kiwi.rtsgame.components.PositionComponent;
-
-import java.awt.*;
 
 /**
  * Render System
@@ -40,25 +36,16 @@ public class ImageRenderSystem extends IteratingSystem {
         renderQueue.add(entity);
     }
 
-    protected void clearCanvas() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    }
-
     protected void drawRenderQueue() {
-        batch.begin();
         for (Entity e : this.renderQueue) {
             batch.draw(drawableMapper.get(e).texture, positionMapper.get(e).x, positionMapper.get(e).y);
         }
-        batch.end();
-
         renderQueue.clear();
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        this.clearCanvas();
         this.drawRenderQueue();
     }
 
