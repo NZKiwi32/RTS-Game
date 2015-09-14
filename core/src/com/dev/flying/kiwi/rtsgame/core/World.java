@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.dev.flying.kiwi.rtsgame.components.*;
 
+import java.util.ArrayList;
+
 /**
  * World
  * This class which constructs entities in the world.
@@ -46,6 +48,23 @@ public class World {
     protected void createEntities() {
         // generatePlayerShape();
         generateTownBarracks();
+        generateForests();
+    }
+
+    private void generateForests() {
+        PositionComponent[] treePositions = new PositionComponent[3];
+        treePositions[0] = new PositionComponent(125,250);
+        treePositions[1] = new PositionComponent(65,230);
+        treePositions[2] = new PositionComponent(195,320);
+
+        for (int i = 0; i<treePositions.length; i++) {
+            Entity tree = this.engine.createEntity();
+            engine.addEntity(tree);
+            tree
+                    .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("tree.png"))))
+                    .add(treePositions[i])
+                    .add(new TreeComponent());
+        }
     }
 
     private Entity generateTownBarracks() {
