@@ -37,10 +37,6 @@ public class World {
                 .add(new PlayerControlledComponent())
                 .add(new SpeedComponent(10000));
 
-
-//
-//        img = new Texture(Gdx.files.internal("player.jpg"));
-
         return player;
     }
 
@@ -48,6 +44,20 @@ public class World {
      * Create the base entities in the world.
      */
     protected void createEntities() {
-        generatePlayerShape();
+        // generatePlayerShape();
+        generateTownBarracks();
+    }
+
+    private Entity generateTownBarracks() {
+        Entity humanBarracks = this.engine.createEntity();
+
+        engine.addEntity(humanBarracks);
+
+        humanBarracks
+                .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("human-barracks.png"))))
+                .add(new PositionComponent(550,50));
+
+        return humanBarracks;
+
     }
 }
