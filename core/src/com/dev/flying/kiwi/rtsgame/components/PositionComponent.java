@@ -10,6 +10,10 @@ public class PositionComponent implements Component {
     public float x;
     public float y;
 
+    public PositionComponent(PositionComponent p) {
+        this.x = p.x;
+        this.y = p.y;
+    }
     public PositionComponent(float x, float y) {
         this.x = x;
         this.y = y;
