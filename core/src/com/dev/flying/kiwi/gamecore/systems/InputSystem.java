@@ -1,4 +1,4 @@
-package com.dev.flying.kiwi.rtsgame.systems;
+package com.dev.flying.kiwi.gamecore.systems;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -6,10 +6,10 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.dev.flying.kiwi.rtsgame.components.PlayerControlledComponent;
-import com.dev.flying.kiwi.rtsgame.components.SpeedComponent;
-import com.dev.flying.kiwi.rtsgame.components.VelocityComponent;
-import com.dev.flying.kiwi.rtsgame.core.KeyboardInput;
+import com.dev.flying.kiwi.gamecore.components.PlayerControlledComponent;
+import com.dev.flying.kiwi.gamecore.components.SpeedComponent;
+import com.dev.flying.kiwi.gamecore.components.VelocityComponent;
+import com.dev.flying.kiwi.gamecore.core.KeyboardInput;
 
 /**
  * A System that iterates PlayerControlledComponent entities and applys the action for a input.

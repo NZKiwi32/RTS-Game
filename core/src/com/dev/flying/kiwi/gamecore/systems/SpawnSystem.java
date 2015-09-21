@@ -1,13 +1,11 @@
-package com.dev.flying.kiwi.rtsgame.systems;
+package com.dev.flying.kiwi.gamecore.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
-import com.dev.flying.kiwi.rtsgame.components.*;
+import com.dev.flying.kiwi.gamecore.components.*;
 
 /**
  * Created by Steven on 9/14/2015.

@@ -1,4 +1,4 @@
-package com.dev.flying.kiwi.rtsgame.core;
+package com.dev.flying.kiwi.gamecore.core;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.IntSet;

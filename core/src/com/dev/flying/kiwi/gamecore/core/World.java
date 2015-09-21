@@ -1,10 +1,10 @@
-package com.dev.flying.kiwi.rtsgame.core;
+package com.dev.flying.kiwi.gamecore.core;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.dev.flying.kiwi.rtsgame.components.*;
+import com.dev.flying.kiwi.gamecore.components.*;
 
 /**
  * World

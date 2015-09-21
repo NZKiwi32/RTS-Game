@@ -1,11 +1,11 @@
-package com.dev.flying.kiwi.rtsgame.systems;
+package com.dev.flying.kiwi.gamecore.systems;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.dev.flying.kiwi.rtsgame.components.PositionComponent;
-import com.dev.flying.kiwi.rtsgame.components.VelocityComponent;
+import com.dev.flying.kiwi.gamecore.components.PositionComponent;
+import com.dev.flying.kiwi.gamecore.components.VelocityComponent;
 
 /**
  * A system for moving objects which have a position and velocity

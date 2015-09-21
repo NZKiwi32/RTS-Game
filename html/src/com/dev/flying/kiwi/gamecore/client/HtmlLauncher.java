@@ -1,9 +1,9 @@
-package com.dev.flying.kiwi.rtsgame.client;
+package com.dev.flying.kiwi.gamecore.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.dev.flying.kiwi.rtsgame.RTSGame;
+import com.dev.flying.kiwi.gamecore.ShapeGame;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +14,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener () {
-                return new RTSGame();
+                return new ShapeGame();
         }
 }
