@@ -6,8 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.dev.flying.kiwi.rtsgame.components.*;
 
-import java.util.ArrayList;
-
 /**
  * World
  * This class which constructs entities in the world.
@@ -33,11 +31,10 @@ public class World {
         engine.addEntity(player);
 
         player
-                .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("player.jpg"))))
-                .add(new PositionComponent(10, 10))
+                .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("hex/player_hex.png"))))
+                .add(new PositionComponent(Gdx.graphics.getWidth()/2 - 32f, Gdx.graphics.getHeight()/2 - 32f)) // TODO Calc width/height
                 .add(new VelocityComponent(0,0))
-                .add(new PlayerControlledComponent())
-                .add(new SpeedComponent(10000));
+                .add(new RotationComponent(0));
 
         return player;
     }
@@ -46,9 +43,9 @@ public class World {
      * Create the base entities in the world.
      */
     protected void createEntities() {
-        // generatePlayerShape();
-        generateTownBarracks();
-        generateForests();
+        generatePlayerShape();
+        //generateTownBarracks();
+        //generateForests();
     }
 
     private void generateForests() {
@@ -62,8 +59,7 @@ public class World {
             engine.addEntity(tree);
             tree
                     .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("tree.png"))))
-                    .add(treePositions[i])
-                    .add(new TreeComponent());
+                    .add(treePositions[i]);
         }
     }
 
@@ -74,7 +70,8 @@ public class World {
 
         humanBarracks
                 .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("human-barracks.png"))))
-                .add(new PositionComponent(550,50));
+                .add(new PositionComponent(550, 50))
+                .add(new SpawnerComponent(500,75));
 
         return humanBarracks;
 

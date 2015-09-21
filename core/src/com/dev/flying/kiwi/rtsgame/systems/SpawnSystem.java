@@ -36,7 +36,6 @@ public class SpawnSystem extends IntervalSystem {
             spawnedEntity
                     .add(new PositionComponent(pm.get(entity)))
                     .add(new ImageDrawableComponent(new Texture(Gdx.files.internal("tree.png"))))
-                    .add(new TreeComponent())
                     .add(new VelocityComponent(-500, 500));
         }
     }
