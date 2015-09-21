@@ -1,4 +1,4 @@
-package com.dev.flying.kiwi.rtsgame.components;
+package com.dev.flying.kiwi.gamecore.components;
 
 import com.badlogic.ashley.core.Component;
 
