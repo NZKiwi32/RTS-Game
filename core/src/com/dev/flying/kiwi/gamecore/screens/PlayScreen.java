@@ -4,23 +4,34 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.dev.flying.kiwi.gamecore.actors.InvisibleActor;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
+import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory.Shapes;
 
 /** A Screen which contains the stage and all actors. This controls the main part of the game.
  * Created by Steven on 9/21/2015.
  */
 public class PlayScreen implements Screen {
     private Color background;
+    private boolean loaded; // Is the level finished loading
 
     private Stage stage;
     private Actor player;
-    private Array<Actor> incoming;
+    private ObjectSet<Actor> shapes;
+
+    // Level components // TODO abstract later
+    private Array<ShapeActorFactory.Shapes> levelShapes;
+    private Array<InvisibleActor> spawners;
+    private int maxShapes; // Maximum number of shapes on the screen, if exceeded don't spawn more.
 
     @Override
     public void show() {
@@ -31,6 +42,31 @@ public class PlayScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         createPlayer();
+        createSpawners();
+        createLevel();
+        shapes = new ObjectSet<>();
+
+        loaded = true;
+    }
+
+    private void createLevel() {
+        levelShapes = new Array<>();
+        levelShapes.add(Shapes.CIRCLE);
+        levelShapes.add(Shapes.HEX);
+        levelShapes.add(Shapes.PENTAGON);
+        maxShapes = 5; // 1 for now, as 2+ can have shapes on top of each other
+    }
+
+    private void createSpawners() {
+        spawners = new Array<>();
+        spawners.add(new InvisibleActor(-50, -50));
+        spawners.add(new InvisibleActor(300, -50));
+        spawners.add(new InvisibleActor(400, 100));
+        spawners.add(new InvisibleActor(900, 800));
+        spawners.add(new InvisibleActor(400, 100));
+        for (InvisibleActor spawner : spawners) {
+            stage.addActor(spawner);
+        }
     }
 
     private void createPlayer() {
@@ -53,8 +89,24 @@ public class PlayScreen implements Screen {
     }
 
     private void update(float delta) {
-        stage.act(delta);
-        // player.rotateBy(3f);
+        if(loaded) {
+            spawnShapes();
+            stage.act(delta);
+        }
+    }
+
+    private void spawnShapes() {
+        if(shapes.size >= maxShapes) return; // don't spawn if we are at the maximum.
+
+        // Select a spawner at random
+        InvisibleActor spawner = spawners.get(MathUtils.random(spawners.size-1));
+        Actor shape = ShapeActorFactory.generateShape();
+        shape.setPosition(spawner.getX()- shape.getWidth() / 2, spawner.getY() - shape.getHeight()/2);
+        shape.setOrigin(shape.getWidth() / 2, shape.getHeight() / 2);
+        shapes.add(shape);
+        stage.addActor(shape);
+
+        shape.addAction(Actions.moveTo(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 3f));
     }
 
     private void draw(float delta) {
