@@ -5,15 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import javax.xml.soap.Text;
-
 /** The core player actor class. States how
  * Created by Steven on 9/21/2015.
  */
-public class PlayerActor extends Actor {
+public class ShapeActor extends Actor {
     private TextureRegion textureRegion;
 
-    public PlayerActor(TextureRegion textureRegion) {
+    public ShapeActor(TextureRegion textureRegion) {
         this.textureRegion = textureRegion;
     }
 
