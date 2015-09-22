@@ -23,7 +23,7 @@ public class ShapeActorFactory {
 
         private String value;
 
-        private Shapes(String texture) {
+        Shapes(String texture) {
             this.value = texture;
         }
 
