@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * This class is a factory for creating random shaped Actors.
+ * The returned item will be a Actor without position, the callee is responsible for placing the actor.
  * Created by Steven on 9/22/2015.
  */
 public class ShapeActorFactory {
@@ -37,6 +39,11 @@ public class ShapeActorFactory {
         }
     }
 
+    /**
+     * Generates a specific actor given a shape type.
+     * @param s The shape in which to use a the texture
+     * @return The Actor
+     */
     public static Actor generateSpecificShape(Shapes s) {
         Actor shape = new ShapeActor(new TextureRegion(new Texture(Gdx.files.internal(s.value))));
         shape.setRotation(0);
@@ -47,6 +54,10 @@ public class ShapeActorFactory {
         return shape;
     }
 
+    /**
+     * A random shaped actor
+     * @return an Actor
+     */
     public static Actor generateShape() {
        return generateSpecificShape(Shapes.randomShape());
     }
