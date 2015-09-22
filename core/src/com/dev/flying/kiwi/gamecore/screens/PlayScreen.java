@@ -4,12 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.dev.flying.kiwi.gamecore.actors.PlayerActor;
+import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 
 /** A Screen which contains the stage and all actors. This controls the main part of the game.
  * Created by Steven on 9/21/2015.
@@ -33,19 +34,14 @@ public class PlayScreen implements Screen {
     }
 
     private void createPlayer() {
-        TextureRegion tr = new TextureRegion(new Texture(Gdx.files.internal("hex/player_hex.png")));
-        player = new PlayerActor(tr);
-        player.setRotation(0);
-        player.setWidth(64);
-        player.setHeight(64);
-        player.setBounds(0, 0, player.getWidth(), player.getHeight());
+        player = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
         player.setPosition(Gdx.graphics.getWidth() / 2 - player.getWidth() / 2, Gdx.graphics.getHeight() / 2 - player.getHeight() / 2);
-        player.setOrigin(player.getWidth() / 2, player.getHeight() / 2);
 
+        // TODO bind to whole screen
         player.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("down");
-                player.rotateBy(3f);
+                // TODO improve spin input controls
+                player.rotateBy(30f);
                 return true;
             }
 
