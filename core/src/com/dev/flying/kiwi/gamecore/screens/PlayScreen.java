@@ -5,10 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
@@ -25,7 +22,7 @@ public class PlayScreen implements Screen {
     private boolean loaded; // Is the level finished loading
 
     private Stage stage;
-    private Actor player;
+    private Group player;
     private ObjectSet<Actor> shapes;
 
     // Level components // TODO abstract later
@@ -54,7 +51,7 @@ public class PlayScreen implements Screen {
         levelShapes.add(Shapes.CIRCLE);
         levelShapes.add(Shapes.HEX);
         levelShapes.add(Shapes.PENTAGON);
-        maxShapes = 5; // 1 for now, as 2+ can have shapes on top of each other
+        maxShapes = 1; // 1 for now, as 2+ can have shapes on top of each other
     }
 
     private void createSpawners() {
@@ -70,14 +67,36 @@ public class PlayScreen implements Screen {
     }
 
     private void createPlayer() {
-        player = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
-        player.setPosition(Gdx.graphics.getWidth() / 2 - player.getWidth() / 2, Gdx.graphics.getHeight() / 2 - player.getHeight() / 2);
+        player = new Group();
+
+        Actor initialShape = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
+        initialShape.setPosition(0, 0);
+        initialShape.setOrigin(initialShape.getWidth() / 2, initialShape.getHeight() / 2);
+        initialShape.setName("shape1");
+//
+//        Actor initialShape2 = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
+//        initialShape2.setPosition(-100, 0);
+//        initialShape2.setOrigin(initialShape2.getWidth() / 2, initialShape2.getHeight() / 2);
+//        initialShape2.setName("shape2");
+//
+//        Actor initialShape3 = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
+//        initialShape3.setPosition(100, 0);
+//        initialShape3.setOrigin(initialShape3.getWidth() / 2, initialShape3.getHeight() / 2);
+//        initialShape3.setName("shape3");
+
+        player.addActor(initialShape);
+//        player.addActor(initialShape2);
+//        player.addActor(initialShape3);
+
+        player.setPosition(Gdx.graphics.getWidth() / 2 - initialShape.getWidth() / 2, Gdx.graphics.getHeight() / 2 - initialShape.getHeight() / 2);
+        player.setOrigin(initialShape.getWidth() / 2, initialShape.getHeight() / 2);
+
 
         // TODO bind to whole screen
         player.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // TODO improve spin input controls
-                player.rotateBy(30f);
+                player.rotateBy(15f);
                 return true;
             }
 
