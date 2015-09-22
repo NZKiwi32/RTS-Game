@@ -6,7 +6,7 @@
 	<inherits name='com.badlogic.ashley_gwt' />
 
 	<inherits name='RTSGame' />
-	<entry-point class='com.dev.flying.kiwi.rtsgame.client.HtmlLauncher' />
+	<entry-point class='com.dev.flying.kiwi.gamecore.client.HtmlLauncher' />
 	
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
 </module>
