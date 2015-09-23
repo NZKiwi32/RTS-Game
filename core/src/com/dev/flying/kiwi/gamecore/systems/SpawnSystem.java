@@ -5,7 +5,10 @@ import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.dev.flying.kiwi.gamecore.components.*;
+import com.dev.flying.kiwi.gamecore.components.ImageDrawableComponent;
+import com.dev.flying.kiwi.gamecore.components.PositionComponent;
+import com.dev.flying.kiwi.gamecore.components.SpawnerComponent;
+import com.dev.flying.kiwi.gamecore.components.VelocityComponent;
 
 /**
  * Created by Steven on 9/14/2015.

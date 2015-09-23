@@ -4,9 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.dev.flying.kiwi.gamecore.components.SpawnerComponent;
-import com.dev.flying.kiwi.gamecore.screens.SplashScreen;
 import com.dev.flying.kiwi.gamecore.screens.PlayScreen;
+import com.dev.flying.kiwi.gamecore.screens.SplashScreen;
 
 public class ShapeGame extends Game {
 	public static final String TITLE = "ShapeGame", VERSION = "0.0.0.0";
