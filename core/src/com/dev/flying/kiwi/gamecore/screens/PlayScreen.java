@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.factories.PlayerFactory;
 
 /**
@@ -19,8 +20,6 @@ public class PlayScreen implements Screen {
     private final float TIMESTEP = 1 / 60f;
     private final int VELOCITYITERATIONS = 8, POSITIONITERATIONS = 3;
 
-    private Color background;
-
     private OrthographicCamera camera;
     private Stage stage;
     private World world;
@@ -28,8 +27,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-        background = new Color(0.3f, 0.2f, 0.25f, 1f);
-
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 
@@ -40,23 +37,23 @@ public class PlayScreen implements Screen {
         PlayerFactory.createPlayer(world);
     }
 
-
-
-    private void update(float delta) {
+    private void clear() {
+        Gdx.gl.glClearColor(ShapeGame.BACKGROUND.r, ShapeGame.BACKGROUND.g, ShapeGame.BACKGROUND.b, ShapeGame.BACKGROUND.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
+    private void update(float delta) {
+        world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
+    }
 
     private void draw(float delta) {
-        Gdx.gl.glClearColor(background.r, background.g, background.b, background.a);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
         debugRenderer.render(world, camera.combined);
     }
 
     @Override
     public void render(float delta) {
         update(delta);
+        clear();
         draw(delta);
     }
 

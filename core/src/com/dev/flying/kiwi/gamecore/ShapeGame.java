@@ -2,6 +2,7 @@ package com.dev.flying.kiwi.gamecore;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.dev.flying.kiwi.gamecore.components.SpawnerComponent;
 import com.dev.flying.kiwi.gamecore.screens.SplashScreen;
@@ -11,6 +12,7 @@ public class ShapeGame extends Game {
 	public static final String TITLE = "ShapeGame", VERSION = "0.0.0.0";
 	public static boolean DEV_JUMP_TO_GAME = true; // Turns off components like SplashScreens for faster development
 
+	public static final Color BACKGROUND = new Color(0.3f, 0.2f, 0.25f, 1f);
 	@Override
 	public void create () {
 		if(DEV_JUMP_TO_GAME) {
