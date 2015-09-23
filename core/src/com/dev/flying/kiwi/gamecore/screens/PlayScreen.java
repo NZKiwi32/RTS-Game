@@ -1,5 +1,8 @@
 package com.dev.flying.kiwi.gamecore.screens;
 
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,7 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
+import com.dev.flying.kiwi.gamecore.components.ActorComponent;
+import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 import com.dev.flying.kiwi.gamecore.factories.PlayerFactory;
+import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
 
 /**
  * A Screen which contains the stage and all actors. This controls the main part of the game.
@@ -30,12 +36,13 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
 
-    private Body playerBody;
-    private Actor playerActor;
-
+    private Entity player;
+    private PooledEngine engine;
+    private PhysicsActorRenderSystem physicsActorRenderSystem;
 
     @Override
     public void show() {
+        engine = new PooledEngine();
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 
@@ -44,9 +51,15 @@ public class PlayScreen implements Screen {
         batch = new SpriteBatch();
         world = new World(new Vector2(0,0), true);
         debugRenderer = new Box2DDebugRenderer();
-        playerBody = PlayerFactory.createPlayer(world);
 
-        playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
+        player = engine.createEntity();
+
+        player.add(new PhysicsBodyComponent(PlayerFactory.createPlayer(world)));
+        player.add(new ActorComponent(ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX)));
+
+        physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
+        engine.addSystem(physicsActorRenderSystem);
+
 
     }
 
@@ -57,12 +70,13 @@ public class PlayScreen implements Screen {
 
     private void update(float delta) {
         world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
+        engine.update(delta);
     }
 
     private void draw(float delta) {
         debugRenderer.render(world, camera.combined);
         batch.begin();
-        playerActor.draw(batch, 1);
+        physicsActorRenderSystem.drawRenderQueue();
         batch.end();
     }
 
