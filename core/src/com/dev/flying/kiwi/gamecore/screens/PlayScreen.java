@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,9 +19,11 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
+import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
 import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
 import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
+import com.dev.flying.kiwi.gamecore.systems.EnemyMovementSystem;
 import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
 
 /**
@@ -40,6 +43,7 @@ public class PlayScreen implements Screen {
     private Entity player;
     private PooledEngine engine;
     private PhysicsActorRenderSystem physicsActorRenderSystem;
+    private EnemyMovementSystem enemyMovementSystem;
 
     @Override
     public void show() {
@@ -62,6 +66,9 @@ public class PlayScreen implements Screen {
 
         physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
         engine.addSystem(physicsActorRenderSystem);
+        enemyMovementSystem = new EnemyMovementSystem(Vector2.Zero);
+        engine.addSystem(enemyMovementSystem);
+
     }
 
     private void createPlayer() {
@@ -69,8 +76,8 @@ public class PlayScreen implements Screen {
         Actor playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
         engine.addEntity(
                 player
-                        .add(new PhysicsBodyComponent(GameObjectFactory.createPlayer(world)))
-                        .add(new ActorComponent(playerActor))
+                .add(new PhysicsBodyComponent(GameObjectFactory.createPlayer(world)))
+                .add(new ActorComponent(playerActor))
         );
         stage.addActor(playerActor);
     }
@@ -78,11 +85,15 @@ public class PlayScreen implements Screen {
     private void createEnemies() {
         Entity enemy = engine.createEntity();
         Actor actor = ShapeActorFactory.generateShape();
+        Body body = GameObjectFactory.createEnemy(world, -9, 9);
+
         engine.addEntity(
                 enemy
-                        .add(new PhysicsBodyComponent(GameObjectFactory.createEnemy(world, 9, 9)))
-                        .add(new ActorComponent(actor))
+                .add(new PhysicsBodyComponent(body))
+                .add(new ActorComponent(actor))
+                .add(new EnemyComponent())
         );
+
         stage.addActor(actor);
     }
 

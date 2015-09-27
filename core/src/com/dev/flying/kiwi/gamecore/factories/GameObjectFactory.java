@@ -23,7 +23,7 @@ public class GameObjectFactory {
         fixtureDef.shape = ballShape;
         fixtureDef.density = 2.5f;
         fixtureDef.friction = .25f;
-        fixtureDef.restitution = .75f;
+        fixtureDef.restitution = 0;
 
         player.createFixture(fixtureDef);
 
@@ -55,7 +55,7 @@ public class GameObjectFactory {
         fixtureDef.shape = ballShape;
         fixtureDef.density = 1.5f;
         fixtureDef.friction = 1;
-        fixtureDef.restitution = 1;
+        fixtureDef.restitution = 0;
 
 
         body.createFixture(fixtureDef);
