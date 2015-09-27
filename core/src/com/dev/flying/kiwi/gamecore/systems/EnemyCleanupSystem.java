@@ -12,6 +12,7 @@ import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 import com.dev.flying.kiwi.gamecore.components.RemoveComponent;
 
 /**
+ * This system accumulates a list of Entities with PhysicsBodyComponents and RemoveComponents to delete. It then deletes them outside of world.step().
  * Created by Steven on 9/27/2015.
  */
 public class EnemyCleanupSystem extends IteratingSystem{
@@ -35,12 +36,13 @@ public class EnemyCleanupSystem extends IteratingSystem{
 
     public void cleanUp() {
         if(!world.isLocked()) {
-            System.out.println(removables.size);
             ObjectSet.ObjectSetIterator<Entity> rIterator = removables.iterator();
             while(rIterator.hasNext()) {
+                // Get next, and remove from iterator
                 Entity e = rIterator.next();
                 rIterator.remove();
 
+                // Remove it from world, and engine.
                 world.destroyBody(physicsMapper.get(e).body);
                 engine.removeEntity(e);
             }

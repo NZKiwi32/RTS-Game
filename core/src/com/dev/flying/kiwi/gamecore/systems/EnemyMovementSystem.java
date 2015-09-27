@@ -11,6 +11,7 @@ import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
 import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 
 /**
+ * This System Moves All Entities with Component type Enemy towards the predefined Target.
  * Created by Steven on 9/27/2015.
  */
 public class EnemyMovementSystem extends IteratingSystem {
