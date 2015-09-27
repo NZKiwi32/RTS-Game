@@ -58,7 +58,10 @@ public class PlayScreen implements Screen {
 
 
         createPlayer();
-        createEnemies();
+        createEnemy(-9, 9);
+        createEnemy(9, 9);
+        createEnemy(-9, -9);
+        createEnemy(15, 29);
 
         GestureDetector gd = new GestureDetector(new PlayerFlingController(player.getComponent(PhysicsBodyComponent.class).body));
         InputMultiplexer im = new InputMultiplexer(gd, stage);
@@ -68,7 +71,6 @@ public class PlayScreen implements Screen {
         engine.addSystem(physicsActorRenderSystem);
         enemyMovementSystem = new EnemyMovementSystem(Vector2.Zero);
         engine.addSystem(enemyMovementSystem);
-
     }
 
     private void createPlayer() {
@@ -82,10 +84,10 @@ public class PlayScreen implements Screen {
         stage.addActor(playerActor);
     }
 
-    private void createEnemies() {
+    private void createEnemy(float x, float y) {
         Entity enemy = engine.createEntity();
         Actor actor = ShapeActorFactory.generateShape();
-        Body body = GameObjectFactory.createEnemy(world, -9, 9);
+        Body body = GameObjectFactory.createEnemy(world, x, y);
 
         engine.addEntity(
                 enemy
