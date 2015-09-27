@@ -19,7 +19,7 @@ import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
 import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
-import com.dev.flying.kiwi.gamecore.factories.PlayerFactory;
+import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
 import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
 import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
 
@@ -53,25 +53,37 @@ public class PlayScreen implements Screen {
         debugRenderer = new Box2DDebugRenderer();
 
 
+        createPlayer();
+        createEnemies();
+
+        GestureDetector gd = new GestureDetector(new PlayerFlingController(player.getComponent(PhysicsBodyComponent.class).body));
+        InputMultiplexer im = new InputMultiplexer(gd, stage);
+        Gdx.input.setInputProcessor(im);
+
+        physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
+        engine.addSystem(physicsActorRenderSystem);
+    }
+
+    private void createPlayer() {
         player = engine.createEntity();
         Actor playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
         engine.addEntity(
                 player
-                        .add(new PhysicsBodyComponent(PlayerFactory.createPlayer(world)))
+                        .add(new PhysicsBodyComponent(GameObjectFactory.createPlayer(world)))
                         .add(new ActorComponent(playerActor))
         );
-
-        playerActor.setPosition(0, 0);
-
         stage.addActor(playerActor);
+    }
 
-        physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
-        engine.addSystem(physicsActorRenderSystem);
-
-        player.getComponent(PhysicsBodyComponent.class).body.applyForce(Vector2.X, player.getComponent(PhysicsBodyComponent.class).body.getPosition(), true);
-        GestureDetector gd = new GestureDetector(new PlayerFlingController(player.getComponent(PhysicsBodyComponent.class).body));
-        InputMultiplexer im = new InputMultiplexer(gd, stage);
-        Gdx.input.setInputProcessor(im);
+    private void createEnemies() {
+        Entity enemy = engine.createEntity();
+        Actor actor = ShapeActorFactory.generateShape();
+        engine.addEntity(
+                enemy
+                        .add(new PhysicsBodyComponent(GameObjectFactory.createEnemy(world, 9, 9)))
+                        .add(new ActorComponent(actor))
+        );
+        stage.addActor(actor);
     }
 
     private void clear() {
