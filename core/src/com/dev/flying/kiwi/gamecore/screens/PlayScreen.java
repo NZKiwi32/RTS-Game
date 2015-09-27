@@ -1,15 +1,15 @@
 package com.dev.flying.kiwi.gamecore.screens;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,6 +20,7 @@ import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
 import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 import com.dev.flying.kiwi.gamecore.factories.PlayerFactory;
+import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
 import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
 
 /**
@@ -44,7 +45,6 @@ public class PlayScreen implements Screen {
     public void show() {
         engine = new PooledEngine();
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        Gdx.input.setInputProcessor(stage);
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / 25, Gdx.graphics.getHeight() / 25);
 
@@ -52,15 +52,26 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0,0), true);
         debugRenderer = new Box2DDebugRenderer();
 
-        player = engine.createEntity();
 
-        player.add(new PhysicsBodyComponent(PlayerFactory.createPlayer(world)));
-        player.add(new ActorComponent(ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX)));
+        player = engine.createEntity();
+        Actor playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
+        engine.addEntity(
+                player
+                        .add(new PhysicsBodyComponent(PlayerFactory.createPlayer(world)))
+                        .add(new ActorComponent(playerActor))
+        );
+
+        playerActor.setPosition(0, 0);
+
+        stage.addActor(playerActor);
 
         physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
         engine.addSystem(physicsActorRenderSystem);
 
-
+        player.getComponent(PhysicsBodyComponent.class).body.applyForce(Vector2.X, player.getComponent(PhysicsBodyComponent.class).body.getPosition(), true);
+        GestureDetector gd = new GestureDetector(new PlayerFlingController(player.getComponent(PhysicsBodyComponent.class).body));
+        InputMultiplexer im = new InputMultiplexer(gd, stage);
+        Gdx.input.setInputProcessor(im);
     }
 
     private void clear() {

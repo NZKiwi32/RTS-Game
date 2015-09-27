@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
 import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
-import com.dev.flying.kiwi.gamecore.components.PositionComponent;
 
 /**
  * Created by Steven on 9/23/2015.
@@ -35,7 +34,6 @@ public class PhysicsActorRenderSystem extends IteratingSystem {
 
     public void drawRenderQueue() {
         TextureRegion tr;
-
 //        for (Entity e : this.renderQueue) {
 //            tr = new TextureRegion(drawableMapper.get(e).texture, 0, 0, 64,64);
 //            batch.draw(tr, positionMapper.get(e).x, positionMapper.get(e).y, positionMapper.get(e).x, positionMapper.get(e).y, 32f, 32f, 1.0f, 1.0f, 10f);

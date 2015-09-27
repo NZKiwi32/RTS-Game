@@ -3,6 +3,7 @@ package com.dev.flying.kiwi.gamecore.factories;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
+ * Creates a player Box2d body
  * Created by Steven on 9/23/2015.
  */
 public class PlayerFactory {
@@ -10,7 +11,7 @@ public class PlayerFactory {
         BodyDef bodyDef = new BodyDef();
         FixtureDef fixtureDef = new FixtureDef();
 
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(x, y);
 
         Body player = world.createBody(bodyDef);
