@@ -31,11 +31,8 @@ public class EnemyMovementSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         body = physicsMapper.get(entity).body;
-        dir = target.sub(body.getPosition()).nor();
-
+        dir = target.sub(body.getPosition()).nor().scl(body.getPosition().dst(target) / 100) ;
 
         body.applyLinearImpulse(dir, body.getPosition(), true);
-
-
     }
 }
