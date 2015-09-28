@@ -14,16 +14,6 @@ import com.dev.flying.kiwi.gamecore.components.PlayerComponent;
 public class ContactController implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
-
-    }
-
-    @Override
-    public void endContact(Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
         Fixture dataA = contact.getFixtureA();
         Fixture dataB = contact.getFixtureB();
 
@@ -45,6 +35,16 @@ public class ContactController implements ContactListener {
                 }
             }
         }
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
     }
 
     @Override
