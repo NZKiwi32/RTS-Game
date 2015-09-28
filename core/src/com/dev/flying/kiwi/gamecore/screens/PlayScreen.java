@@ -73,7 +73,7 @@ public class PlayScreen implements Screen {
         userInput();
         ashleySystems();
 
-        SpawnSystem spawnSystem = new SpawnSystem(1f, enemyCreator);
+        SpawnSystem spawnSystem = new SpawnSystem(1.5f, enemyCreator);
         engine.addSystem(spawnSystem);
         world.setContactListener(new ContactController());
     }
