@@ -2,14 +2,17 @@ package com.dev.flying.kiwi.gamecore.collisions;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.*;
+import com.dev.flying.kiwi.gamecore.components.CollidedEnemyComponent;
 import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
 import com.dev.flying.kiwi.gamecore.components.PlayerComponent;
-import com.dev.flying.kiwi.gamecore.components.RemoveComponent;
 
 /**
+ * ContactController
+ * This class handles collisions within the Box2D World
+ *
  * Created by Steven on 9/28/2015.
  */
-public class PlayerCollider implements ContactListener {
+public class ContactController implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
         Fixture dataA = contact.getFixtureA();
@@ -48,7 +51,7 @@ public class PlayerCollider implements ContactListener {
                 // entity is the player, so do nothing
 
             } else if( entity.getComponent(EnemyComponent.class) != null) {
-                entity.add(new RemoveComponent());
+                entity.add(new CollidedEnemyComponent());
 
             }
         }

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * ShapeActorFactory
  * This class is a factory for creating random shaped Actors.
  * The returned item will be a Actor without position, the callee is responsible for placing the actor.
  * Created by Steven on 9/22/2015.

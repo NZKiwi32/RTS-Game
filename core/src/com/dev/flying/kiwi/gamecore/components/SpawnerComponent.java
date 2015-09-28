@@ -3,7 +3,8 @@ package com.dev.flying.kiwi.gamecore.components;
 import com.badlogic.ashley.core.Component;
 
 /**
- * A component for 2D PositionComponent
+ * SpawnerComponent
+ * Marks a entity as an Spawner at a given location
  * Created by Steven on 7/29/2015.
  */
 public class SpawnerComponent implements Component {

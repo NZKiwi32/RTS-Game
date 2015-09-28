@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class PlayerFlingController extends GestureDetector.GestureAdapter {
     private Body body;
-    public static final float MAX_ROTATION_VELOCITY = 50f;
 
     /**
      * @param body the body for the gesture to apply to.

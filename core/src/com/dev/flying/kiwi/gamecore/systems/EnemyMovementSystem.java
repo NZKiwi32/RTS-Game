@@ -7,15 +7,15 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
+import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
 import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
-import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 
 /**
  * This System Moves All Entities with Component type Enemy towards the predefined Target.
  * Created by Steven on 9/27/2015.
  */
 public class EnemyMovementSystem extends IteratingSystem {
-    private ComponentMapper<PhysicsBodyComponent> physicsMapper;
+    private ComponentMapper<Box2DBodyComponent> physicsMapper;
 
     private final Vector2 target;
 
@@ -24,8 +24,8 @@ public class EnemyMovementSystem extends IteratingSystem {
     private Vector2 dir;
 
     public EnemyMovementSystem(Vector2 target) {
-        super(Family.all(PhysicsBodyComponent.class, ActorComponent.class, EnemyComponent.class).get());
-        this.physicsMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
+        super(Family.all(Box2DBodyComponent.class, ActorComponent.class, EnemyComponent.class).get());
+        this.physicsMapper = ComponentMapper.getFor(Box2DBodyComponent.class);
         this.target = target;
     }
 
