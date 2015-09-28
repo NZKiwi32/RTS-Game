@@ -3,23 +3,31 @@ package com.dev.flying.kiwi.gamecore.systems;
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.dev.flying.kiwi.gamecore.components.PositionComponent;
 import com.dev.flying.kiwi.gamecore.components.SpawnerComponent;
-import com.dev.flying.kiwi.gamecore.components.TextureComponent;
-import com.dev.flying.kiwi.gamecore.components.VelocityComponent;
+import com.dev.flying.kiwi.gamecore.prefabs.GameObjectCreatorInterface;
 
 /**
+ * SpawnSystem
+ *
+ * On a certain interval and does:
+ * - Randomly selects a Spawner entity from the Family
+ * - Spawns units calling toSpawn.create {@link GameObjectCreatorInterface}.
+ *
  * Created by Steven on 9/14/2015.
  */
 public class SpawnSystem extends IntervalSystem {
     private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
-    private ComponentMapper<SpawnerComponent> vm = ComponentMapper.getFor(SpawnerComponent.class);
     ImmutableArray<Entity> entities;
     PooledEngine engine;
-    public SpawnSystem(float interval) {
+
+    GameObjectCreatorInterface toSpawn;
+    int maxEnemies = 1;
+
+    public SpawnSystem(float interval, GameObjectCreatorInterface toSpawn) {
         super(interval);
+        this.toSpawn = toSpawn;
     }
 
     @Override
@@ -28,16 +36,13 @@ public class SpawnSystem extends IntervalSystem {
         entities = engine.getEntitiesFor(Family.all(PositionComponent.class, SpawnerComponent.class).get());
     }
 
+    private Entity randomSpawner() {
+        return entities.get(MathUtils.random(entities.size()-1));
+    }
+
     @Override
     protected void updateInterval() {
-        Entity spawnedEntity;
-        for (Entity entity : entities) {
-            spawnedEntity = this.engine.createEntity();
-            engine.addEntity(spawnedEntity);
-            spawnedEntity
-                    .add(new PositionComponent(pm.get(entity)))
-                    .add(new TextureComponent(new Texture(Gdx.files.internal("tree.png"))))
-                    .add(new VelocityComponent(-500, 500));
-        }
+        Entity spawner = randomSpawner();
+        toSpawn.create(pm.get(spawner).x, pm.get(spawner).y);
     }
 }

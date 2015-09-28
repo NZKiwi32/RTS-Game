@@ -24,6 +24,7 @@ import com.dev.flying.kiwi.gamecore.prefabs.SpawnerCreator;
 import com.dev.flying.kiwi.gamecore.systems.EnemyCleanupSystem;
 import com.dev.flying.kiwi.gamecore.systems.EnemyMovementSystem;
 import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
+import com.dev.flying.kiwi.gamecore.systems.SpawnSystem;
 
 /**
  * PlayScreen
@@ -63,16 +64,17 @@ public class PlayScreen implements Screen {
         player = new PlayerCreator(engine,world,stage).create(0,0);
 
         EnemyCreator enemyCreator = new EnemyCreator(engine,world,stage);
-        enemyCreator.create(-9, 9);
-        enemyCreator.create(3, 9);
-        enemyCreator.create(-9, -12);
-        enemyCreator.create(11, 39);
-
         SpawnerCreator spawnerCreator = new SpawnerCreator(engine,world,stage);
-        spawnerCreator.create(9,10);
+        spawnerCreator.create(6,10);
+        spawnerCreator.create(2,10);
+        spawnerCreator.create(-4,-5);
+        spawnerCreator.create(14,-8);
 
         userInput();
         ashleySystems();
+
+        SpawnSystem spawnSystem = new SpawnSystem(1f, enemyCreator);
+        engine.addSystem(spawnSystem);
         world.setContactListener(new ContactController());
     }
 
@@ -88,6 +90,7 @@ public class PlayScreen implements Screen {
         engine.addSystem(new EnemyMovementSystem(Vector2.Zero));
         enemyCleanupSystem = new EnemyCleanupSystem(world, engine, player.getComponent(Box2DBodyComponent.class).body);
         engine.addSystem(enemyCleanupSystem);
+
     }
 
     private void clear() {
