@@ -4,20 +4,9 @@ import com.badlogic.ashley.core.Component;
 
 /**
  * SpawnerComponent
- * Marks a entity as an Spawner at a given location
+ * Marks a entity as an Spawner
  * Created by Steven on 7/29/2015.
  */
 public class SpawnerComponent implements Component {
-    public float x;
-    public float y;
-
-    public SpawnerComponent(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public String toString() {
-        return SpawnerComponent.class.getSimpleName() + "=(" + this.x + "," + this.y + ")";
-    }
 }
 

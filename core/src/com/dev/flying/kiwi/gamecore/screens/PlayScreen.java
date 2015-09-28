@@ -19,10 +19,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.collisions.ContactController;
-import com.dev.flying.kiwi.gamecore.components.ActorComponent;
-import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
-import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
-import com.dev.flying.kiwi.gamecore.components.PlayerComponent;
+import com.dev.flying.kiwi.gamecore.components.*;
 import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
 import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
 import com.dev.flying.kiwi.gamecore.systems.EnemyCleanupSystem;
@@ -66,15 +63,24 @@ public class PlayScreen implements Screen {
 
         createPlayer();
         createEnemy(-9, 9);
-        createEnemy(9, 9);
-        createEnemy(-9, -9);
-        createEnemy(15, 29);
+        createEnemy(3, 9);
+        createEnemy(-9, -12);
+        createEnemy(11, 39);
+
+        createSpawner(12,14);
 
         userInput();
-
         ashleySystems();
-
         world.setContactListener(new ContactController());
+    }
+
+    private void createSpawner(int x, int y) {
+        Entity spawner = engine.createEntity();
+        engine.addEntity(
+                spawner
+                .add(new SpawnerComponent())
+                .add(new PositionComponent(x,y))
+        );
     }
 
     private void userInput() {
