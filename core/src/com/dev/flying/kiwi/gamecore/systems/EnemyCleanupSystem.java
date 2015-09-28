@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.ObjectSet;
 import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
 import com.dev.flying.kiwi.gamecore.components.CollidedEnemyComponent;
 import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
-import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
+import com.dev.flying.kiwi.gamecore.prefabs.EnemyCreator;
 
 /**
  * This system accumulates a list of Entities with PhysicsBodyComponents and RemoveComponents to delete. It then deletes them outside of world.step().
@@ -61,7 +61,7 @@ public class EnemyCleanupSystem extends IteratingSystem{
                 for(Fixture f: fixtures) {
                     cs = (CircleShape) f.getShape();
                     cs.setPosition(localPos);
-                    fd = GameObjectFactory.getEnemyFixtureDef(f.getShape());
+                    fd = EnemyCreator.getEnemyFixtureDef(f.getShape());
                     this.player.createFixture(fd);
 
                     // Remove it from world, and engine.

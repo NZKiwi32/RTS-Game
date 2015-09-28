@@ -2,16 +2,13 @@ package com.dev.flying.kiwi.gamecore.prefabs;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
 import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
 import com.dev.flying.kiwi.gamecore.components.PlayerComponent;
-import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
-
 /**
  * PlayerCreator
  *
@@ -29,7 +26,7 @@ public class PlayerCreator extends GameObjectCreator {
         Entity player = engine.createEntity();
         Actor playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
         playerActor.setName("Player");
-        Body body = GameObjectFactory.createPlayer(world);
+        Body body = PlayerCreator.createPlayer(world);
         body.setUserData(player);
 
         engine.addEntity(
@@ -39,6 +36,35 @@ public class PlayerCreator extends GameObjectCreator {
                         .add(new PlayerComponent())
         );
         stage.addActor(playerActor);
+        return player;
+    }
+
+    private static Body createPlayer(World world) {
+        return createPlayer(world, 0, 0);
+    }
+
+    private static Body createPlayer(World world, float x, float y) {
+        BodyDef bodyDef = new BodyDef();
+        FixtureDef fixtureDef = new FixtureDef();
+
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(x, y);
+
+        Body player = world.createBody(bodyDef);
+
+        CircleShape ballShape = new CircleShape();
+        ballShape.setRadius(1f);
+
+        // fixture definition
+        fixtureDef.shape = ballShape;
+        fixtureDef.density = 2.5f;
+        fixtureDef.friction = .25f;
+        fixtureDef.restitution = 0;
+
+        player.createFixture(fixtureDef);
+
+        ballShape.dispose();
+
         return player;
     }
 }

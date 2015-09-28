@@ -31,7 +31,5 @@ public abstract class GameObjectCreator implements GameObjectCreatorInterface {
      * @return the entity after creation
      */
     @Override
-    public Entity create(float x, float y) {
-        return null;
-    }
+    abstract public Entity create(float x, float y);
 }
