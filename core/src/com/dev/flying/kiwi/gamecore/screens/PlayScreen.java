@@ -8,7 +8,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.collisions.ContactController;
 import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
-import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
+import com.dev.flying.kiwi.gamecore.input.PlayerMouseMoveController;
 import com.dev.flying.kiwi.gamecore.prefabs.EnemyCreator;
 import com.dev.flying.kiwi.gamecore.prefabs.PlayerCreator;
 import com.dev.flying.kiwi.gamecore.prefabs.SpawnerCreator;
@@ -65,10 +64,10 @@ public class PlayScreen implements Screen {
 
         EnemyCreator enemyCreator = new EnemyCreator(engine,world,stage);
         SpawnerCreator spawnerCreator = new SpawnerCreator(engine,world,stage);
-        spawnerCreator.create(6,10);
-        spawnerCreator.create(2,10);
-        spawnerCreator.create(-4,-5);
-        spawnerCreator.create(14,-8);
+        spawnerCreator.create(15,15);
+        spawnerCreator.create(20,20);
+        spawnerCreator.create(-14,-20);
+        spawnerCreator.create(24,-28);
 
         userInput();
         ashleySystems();
@@ -79,8 +78,8 @@ public class PlayScreen implements Screen {
     }
 
     private void userInput() {
-        GestureDetector gd = new GestureDetector(new PlayerFlingController(player.getComponent(Box2DBodyComponent.class).body));
-        InputMultiplexer im = new InputMultiplexer(gd, stage);
+
+        InputMultiplexer im = new InputMultiplexer(new PlayerMouseMoveController(player), stage);
         Gdx.input.setInputProcessor(im);
     }
 
