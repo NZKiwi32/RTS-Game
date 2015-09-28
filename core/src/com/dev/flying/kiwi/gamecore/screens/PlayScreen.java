@@ -18,10 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
-import com.dev.flying.kiwi.gamecore.collisions.PlayerCollider;
+import com.dev.flying.kiwi.gamecore.collisions.ContactController;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
+import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
 import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
-import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 import com.dev.flying.kiwi.gamecore.components.PlayerComponent;
 import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
 import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
@@ -30,12 +30,17 @@ import com.dev.flying.kiwi.gamecore.systems.EnemyMovementSystem;
 import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
 
 /**
- * A Screen which contains the stage and all actors. This controls the main part of the game.
+ * PlayScreen
+ * A Screen which contains:
+ *  - Stage, Actors
+ *  - Entities, Systems
+ *  - Input from User
+ *
  * Created by Steven on 9/21/2015.
  */
 public class PlayScreen implements Screen {
-    private final float TIMESTEP = 1 / 60f;
-    private final int VELOCITYITERATIONS = 8, POSITIONITERATIONS = 3;
+    private static float TIMESTEP = 1 / 60f;
+    private static int VELOCITYITERATIONS = 8, POSITIONITERATIONS = 3;
 
     private OrthographicCamera camera;
     private Stage stage;
@@ -46,7 +51,6 @@ public class PlayScreen implements Screen {
     private Entity player;
     private PooledEngine engine;
     private PhysicsActorRenderSystem physicsActorRenderSystem;
-    private EnemyMovementSystem enemyMovementSystem;
     private EnemyCleanupSystem enemyCleanupSystem;
 
     @Override
@@ -70,11 +74,11 @@ public class PlayScreen implements Screen {
 
         ashleySystems();
 
-        world.setContactListener(new PlayerCollider());
+        world.setContactListener(new ContactController());
     }
 
     private void userInput() {
-        GestureDetector gd = new GestureDetector(new PlayerFlingController(player.getComponent(PhysicsBodyComponent.class).body));
+        GestureDetector gd = new GestureDetector(new PlayerFlingController(player.getComponent(Box2DBodyComponent.class).body));
         InputMultiplexer im = new InputMultiplexer(gd, stage);
         Gdx.input.setInputProcessor(im);
     }
@@ -83,7 +87,7 @@ public class PlayScreen implements Screen {
         physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
         engine.addSystem(physicsActorRenderSystem);
         engine.addSystem(new EnemyMovementSystem(Vector2.Zero));
-        enemyCleanupSystem = new EnemyCleanupSystem(world, engine, player.getComponent(PhysicsBodyComponent.class).body);
+        enemyCleanupSystem = new EnemyCleanupSystem(world, engine, player.getComponent(Box2DBodyComponent.class).body);
         engine.addSystem(enemyCleanupSystem);
     }
 
@@ -96,7 +100,7 @@ public class PlayScreen implements Screen {
 
         engine.addEntity(
                 player
-                .add(new PhysicsBodyComponent(body))
+                .add(new Box2DBodyComponent(body))
                 .add(new ActorComponent(playerActor))
                 .add(new PlayerComponent())
         );
@@ -111,7 +115,7 @@ public class PlayScreen implements Screen {
 
         engine.addEntity(
                 enemy
-                .add(new PhysicsBodyComponent(body))
+                .add(new Box2DBodyComponent(body))
                 .add(new ActorComponent(actor))
                 .add(new EnemyComponent())
         );

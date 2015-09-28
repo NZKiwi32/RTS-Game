@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
+import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
+import com.dev.flying.kiwi.gamecore.components.CollidedEnemyComponent;
 import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
-import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
-import com.dev.flying.kiwi.gamecore.components.RemoveComponent;
 import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
 
 /**
@@ -19,15 +19,15 @@ import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
  * Created by Steven on 9/27/2015.
  */
 public class EnemyCleanupSystem extends IteratingSystem{
-    private final ComponentMapper<PhysicsBodyComponent> physicsMapper;
+    private final ComponentMapper<Box2DBodyComponent> physicsMapper;
     private Engine engine;
     private World world;
     private ObjectSet<Entity> removables;
     private Body player;
 
     public EnemyCleanupSystem(World world, Engine engine, Body player) {
-        super(Family.all(PhysicsBodyComponent.class, RemoveComponent.class, EnemyComponent.class).get());
-        this.physicsMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
+        super(Family.all(Box2DBodyComponent.class, CollidedEnemyComponent.class, EnemyComponent.class).get());
+        this.physicsMapper = ComponentMapper.getFor(Box2DBodyComponent.class);
         this.world = world;
         this.player = player;
         this.engine = engine;
@@ -66,6 +66,7 @@ public class EnemyCleanupSystem extends IteratingSystem{
 
                     // Remove it from world, and engine.
                     world.destroyBody(contactBody);
+                    engine.removeEntity(e);
                 }
 
 

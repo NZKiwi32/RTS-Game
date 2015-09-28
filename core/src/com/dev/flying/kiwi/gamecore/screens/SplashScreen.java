@@ -10,8 +10,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-/** The introduction splash screen advertising game and company name.
+/**
+ * SplashScreen
+ *
+ * The introduction splash screen advertising game and company name.
  * Automatically changes to new screen after an interval of time
+ *
  * Created by Steven on 9/21/2015.
  */
 public class SplashScreen implements Screen {

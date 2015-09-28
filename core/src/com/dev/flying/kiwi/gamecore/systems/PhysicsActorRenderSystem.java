@@ -8,22 +8,22 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
-import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
+import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
 
 /**
  * This system renders sprites at a position based on the world, for a given actor.
  * Created by Steven on 9/23/2015.
  */
 public class PhysicsActorRenderSystem extends IteratingSystem {
-    private ComponentMapper<PhysicsBodyComponent> physicsMapper;
+    private ComponentMapper<Box2DBodyComponent> physicsMapper;
     private ComponentMapper<ActorComponent> actorMapper;
 
     private Array<Entity> renderQueue;
     private Batch batch;
 
     public PhysicsActorRenderSystem(Batch batch) {
-        super(Family.all(PhysicsBodyComponent.class, ActorComponent.class).get());
-        this.physicsMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
+        super(Family.all(Box2DBodyComponent.class, ActorComponent.class).get());
+        this.physicsMapper = ComponentMapper.getFor(Box2DBodyComponent.class);
         this.actorMapper = ComponentMapper.getFor(ActorComponent.class);
         this.renderQueue = new Array<>();
     }

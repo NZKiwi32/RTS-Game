@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-/** The core player actor class. States how
+/**
+ * ShapeActor
+ * The core player actor class
  * Created by Steven on 9/21/2015.
  */
 public class ShapeActor extends Actor {

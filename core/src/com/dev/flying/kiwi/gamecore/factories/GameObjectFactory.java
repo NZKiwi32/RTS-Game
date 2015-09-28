@@ -3,7 +3,10 @@ package com.dev.flying.kiwi.gamecore.factories;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
- * Creates a player Box2d body
+ * GameObjectFactory
+ *
+ * Contains a bunch of static methods for creating instances of an object - Think of these as Object Blue Prints.
+ *
  * Created by Steven on 9/23/2015.
  */
 public class GameObjectFactory {
