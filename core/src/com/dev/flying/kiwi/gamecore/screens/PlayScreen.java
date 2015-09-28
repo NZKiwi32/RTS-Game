@@ -10,18 +10,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
-import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.collisions.ContactController;
-import com.dev.flying.kiwi.gamecore.components.*;
-import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
+import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
 import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
+import com.dev.flying.kiwi.gamecore.prefabs.EnemyCreator;
+import com.dev.flying.kiwi.gamecore.prefabs.PlayerCreator;
+import com.dev.flying.kiwi.gamecore.prefabs.SpawnerCreator;
 import com.dev.flying.kiwi.gamecore.systems.EnemyCleanupSystem;
 import com.dev.flying.kiwi.gamecore.systems.EnemyMovementSystem;
 import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
@@ -61,26 +60,20 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0,0), true);
         debugRenderer = new Box2DDebugRenderer();
 
-        createPlayer();
-        createEnemy(-9, 9);
-        createEnemy(3, 9);
-        createEnemy(-9, -12);
-        createEnemy(11, 39);
+        player = new PlayerCreator(engine,world,stage).create(0,0);
 
-        createSpawner(12,14);
+        EnemyCreator enemyCreator = new EnemyCreator(engine,world,stage);
+        enemyCreator.create(-9, 9);
+        enemyCreator.create(3, 9);
+        enemyCreator.create(-9, -12);
+        enemyCreator.create(11, 39);
+
+        SpawnerCreator spawnerCreator = new SpawnerCreator(engine,world,stage);
+        spawnerCreator.create(9,10);
 
         userInput();
         ashleySystems();
         world.setContactListener(new ContactController());
-    }
-
-    private void createSpawner(int x, int y) {
-        Entity spawner = engine.createEntity();
-        engine.addEntity(
-                spawner
-                .add(new SpawnerComponent())
-                .add(new PositionComponent(x,y))
-        );
     }
 
     private void userInput() {
@@ -95,37 +88,6 @@ public class PlayScreen implements Screen {
         engine.addSystem(new EnemyMovementSystem(Vector2.Zero));
         enemyCleanupSystem = new EnemyCleanupSystem(world, engine, player.getComponent(Box2DBodyComponent.class).body);
         engine.addSystem(enemyCleanupSystem);
-    }
-
-    private void createPlayer() {
-        player = engine.createEntity();
-        Actor playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
-        playerActor.setName("Player");
-        Body body = GameObjectFactory.createPlayer(world);
-        body.setUserData(player);
-
-        engine.addEntity(
-                player
-                .add(new Box2DBodyComponent(body))
-                .add(new ActorComponent(playerActor))
-                .add(new PlayerComponent())
-        );
-        stage.addActor(playerActor);
-    }
-
-    private void createEnemy(float x, float y) {
-        Entity enemy = engine.createEntity();
-        Actor actor = ShapeActorFactory.generateShape();
-        Body body = GameObjectFactory.createEnemy(world, x, y);
-        body.setUserData(enemy);
-
-        engine.addEntity(
-                enemy
-                .add(new Box2DBodyComponent(body))
-                .add(new ActorComponent(actor))
-                .add(new EnemyComponent())
-        );
-        stage.addActor(actor);
     }
 
     private void clear() {
