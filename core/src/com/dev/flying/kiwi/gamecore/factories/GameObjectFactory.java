@@ -41,7 +41,7 @@ public class GameObjectFactory {
 
     public static Body createEnemy(World world, float x, float y) {
         BodyDef bodyDef = new BodyDef();
-        FixtureDef fixtureDef = new FixtureDef();
+
 
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
@@ -50,19 +50,26 @@ public class GameObjectFactory {
 
         CircleShape ballShape = new CircleShape();
         ballShape.setRadius(0.75f);
+        FixtureDef fixtureDef = getEnemyFixtureDef(ballShape);
+        // ballShape.dispose();
+
+        body.createFixture(fixtureDef);
+
+
+
+        return body;
+    }
+
+    public static FixtureDef getEnemyFixtureDef(Shape s) {
+        FixtureDef fixtureDef = new FixtureDef();
 
         // fixture definition
-        fixtureDef.shape = ballShape;
+        fixtureDef.shape = s;
         fixtureDef.density = 1.5f;
         fixtureDef.friction = 1;
         fixtureDef.restitution = 0;
 
-
-        body.createFixture(fixtureDef);
-
-        ballShape.dispose();
-
-        return body;
+        return fixtureDef;
     }
 
 }

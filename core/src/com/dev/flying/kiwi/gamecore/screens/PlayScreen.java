@@ -10,13 +10,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
-import com.dev.flying.kiwi.gamecore.components.*;
+import com.dev.flying.kiwi.gamecore.collisions.PlayerCollider;
+import com.dev.flying.kiwi.gamecore.components.ActorComponent;
+import com.dev.flying.kiwi.gamecore.components.EnemyComponent;
+import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
+import com.dev.flying.kiwi.gamecore.components.PlayerComponent;
 import com.dev.flying.kiwi.gamecore.factories.GameObjectFactory;
 import com.dev.flying.kiwi.gamecore.input.PlayerFlingController;
 import com.dev.flying.kiwi.gamecore.systems.EnemyCleanupSystem;
@@ -54,7 +60,6 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0,0), true);
         debugRenderer = new Box2DDebugRenderer();
 
-
         createPlayer();
         createEnemy(-9, 9);
         createEnemy(9, 9);
@@ -65,51 +70,7 @@ public class PlayScreen implements Screen {
 
         ashleySystems();
 
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                Fixture dataA = contact.getFixtureA();
-                Fixture dataB = contact.getFixtureB();
-
-                if(validateFixture(dataA) && validateFixture(dataB) ) {
-                    processFixture(dataA);
-                    processFixture(dataB);
-                }
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-
-            boolean validateFixture(Fixture f) {
-                return f != null && f.getBody().getUserData() != null && f.getBody().getUserData() instanceof Entity;
-            }
-
-            void processFixture(Fixture data) {
-                Entity entity = (Entity) data.getBody().getUserData();
-
-                if(entity != null) {
-                    if (entity.getComponent(PlayerComponent.class) != null) {
-                        // entity is the player, so do nothing
-
-                    } else if( entity.getComponent(EnemyComponent.class) != null) {
-                        entity.add(new RemoveComponent());
-
-                    }
-                }
-            }
-        });
+        world.setContactListener(new PlayerCollider());
     }
 
     private void userInput() {
@@ -122,7 +83,7 @@ public class PlayScreen implements Screen {
         physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
         engine.addSystem(physicsActorRenderSystem);
         engine.addSystem(new EnemyMovementSystem(Vector2.Zero));
-        enemyCleanupSystem = new EnemyCleanupSystem(world, engine);
+        enemyCleanupSystem = new EnemyCleanupSystem(world, engine, player.getComponent(PhysicsBodyComponent.class).body);
         engine.addSystem(enemyCleanupSystem);
     }
 
