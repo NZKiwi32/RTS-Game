@@ -11,6 +11,7 @@ import com.dev.flying.kiwi.gamecore.components.ActorComponent;
 import com.dev.flying.kiwi.gamecore.components.PhysicsBodyComponent;
 
 /**
+ * This system renders sprites at a position based on the world, for a given actor.
  * Created by Steven on 9/23/2015.
  */
 public class PhysicsActorRenderSystem extends IteratingSystem {
