@@ -1,9 +1,10 @@
 package com.dev.flying.kiwi.gamecore.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,11 +45,14 @@ public class ShapeActorFactory {
      * @param s The shape in which to use a the texture
      * @return The Actor
      */
-    public static Actor generateSpecificShape(Shapes s) {
-        Actor shape = new ShapeActor(new TextureRegion(new Texture(Gdx.files.internal(s.value))));
+    public static ShapeActor generateSpecificShape(Shapes s, Vector2 size) {
+        TextureRegion tr = new TextureRegion(new Texture(Gdx.files.internal(s.value)));
+        ShapeActor shape = new ShapeActor(tr);
         shape.setRotation(0);
-        shape.setWidth(64);
-        shape.setHeight(64);
+        shape.setWidth(size.x);
+        shape.setHeight(size.y);
+
+        shape.setColor(Color.BLACK);
         shape.setBounds(0, 0, shape.getWidth(), shape.getHeight());
         shape.setOrigin(shape.getWidth() / 2, shape.getHeight() / 2);
         return shape;
@@ -58,7 +62,7 @@ public class ShapeActorFactory {
      * A random shaped actor
      * @return an Actor
      */
-    public static Actor generateShape() {
-       return generateSpecificShape(Shapes.randomShape());
+    public static ShapeActor generateShape(Vector2 size) {
+       return generateSpecificShape(Shapes.randomShape(), size);
     }
 }
