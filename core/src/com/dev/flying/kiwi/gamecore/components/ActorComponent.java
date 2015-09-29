@@ -1,7 +1,7 @@
 package com.dev.flying.kiwi.gamecore.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.dev.flying.kiwi.gamecore.actors.ShapeActor;
 
 /**
  * ActorComponent
@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * Created by Steven on 9/23/2015.
  */
 public class ActorComponent implements Component {
-    public Actor actor;
+    public ShapeActor actor;
 
-    public ActorComponent(Actor actor) {
+    public ActorComponent(ShapeActor actor) {
         this.actor = actor;
     }
 }
