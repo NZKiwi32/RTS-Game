@@ -20,9 +20,9 @@ import com.dev.flying.kiwi.gamecore.input.PlayerMouseMoveController;
 import com.dev.flying.kiwi.gamecore.prefabs.EnemyCreator;
 import com.dev.flying.kiwi.gamecore.prefabs.PlayerCreator;
 import com.dev.flying.kiwi.gamecore.prefabs.SpawnerCreator;
+import com.dev.flying.kiwi.gamecore.systems.BodyActorUpdateSystem;
 import com.dev.flying.kiwi.gamecore.systems.EnemyCleanupSystem;
 import com.dev.flying.kiwi.gamecore.systems.EnemyMovementSystem;
-import com.dev.flying.kiwi.gamecore.systems.PhysicsActorRenderSystem;
 import com.dev.flying.kiwi.gamecore.systems.SpawnSystem;
 
 /**
@@ -46,12 +46,14 @@ public class PlayScreen implements Screen {
 
     private Entity player;
     private PooledEngine engine;
-    private PhysicsActorRenderSystem physicsActorRenderSystem;
+    private BodyActorUpdateSystem bodyActorUpdateSystem;
     private EnemyCleanupSystem enemyCleanupSystem;
 
     @Override
     public void show() {
         engine = new PooledEngine();
+
+        /** TODO Stage should own camera and  batch call {@link Stage#getCamera()} {@link Stage#getBatch()}  */
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / 25, Gdx.graphics.getHeight() / 25);
@@ -78,15 +80,19 @@ public class PlayScreen implements Screen {
     }
 
     private void userInput() {
-
         InputMultiplexer im = new InputMultiplexer(new PlayerMouseMoveController(player), stage);
         Gdx.input.setInputProcessor(im);
     }
 
     private void ashleySystems() {
-        physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
-        engine.addSystem(physicsActorRenderSystem);
+        // Renders sprites to the Box2D Body/Fixture locations
+        bodyActorUpdateSystem = new BodyActorUpdateSystem();
+        engine.addSystem(bodyActorUpdateSystem);
+
+        // Updates the location of enemies
         engine.addSystem(new EnemyMovementSystem(Vector2.Zero));
+
+        // Switches enemies to be a part of the player on collision
         enemyCleanupSystem = new EnemyCleanupSystem(world, engine, player.getComponent(Box2DBodyComponent.class).body);
         engine.addSystem(enemyCleanupSystem);
 
@@ -105,10 +111,14 @@ public class PlayScreen implements Screen {
     }
 
     private void draw(float delta) {
-        debugRenderer.render(world, camera.combined);
+        batch.setProjectionMatrix(camera.combined);
+
+        // TODO Use stage to call {@link stage#draw()}
         batch.begin();
-        physicsActorRenderSystem.drawRenderQueue();
+        bodyActorUpdateSystem.drawRenderQueue(batch);
         batch.end();
+
+        debugRenderer.render(world, camera.combined);
     }
 
     @Override

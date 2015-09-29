@@ -2,9 +2,10 @@ package com.dev.flying.kiwi.gamecore.prefabs;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.dev.flying.kiwi.gamecore.actors.ShapeActor;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
 import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
@@ -25,7 +26,7 @@ public class EnemyCreator extends GameObjectCreator {
     @Override
     public Entity create(float x, float y) {
         Entity enemy = engine.createEntity();
-        Actor actor = ShapeActorFactory.generateShape();
+        ShapeActor actor = ShapeActorFactory.generateShape(new Vector2(1.5f,1.5f));
         Body body = EnemyCreator.createEnemy(world, x, y);
         body.setUserData(enemy);
 

@@ -2,9 +2,11 @@ package com.dev.flying.kiwi.gamecore.prefabs;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.dev.flying.kiwi.gamecore.actors.ShapeActor;
 import com.dev.flying.kiwi.gamecore.actors.ShapeActorFactory;
 import com.dev.flying.kiwi.gamecore.components.ActorComponent;
 import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
@@ -24,8 +26,9 @@ public class PlayerCreator extends GameObjectCreator {
     @Override
     public Entity create(float x, float y) {
         Entity player = engine.createEntity();
-        Actor playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.HEX);
+        ShapeActor playerActor = ShapeActorFactory.generateSpecificShape(ShapeActorFactory.Shapes.CIRCLE, new Vector2(2,2));
         playerActor.setName("Player");
+        playerActor.setColor(Color.GREEN);
         Body body = PlayerCreator.createPlayer(world);
         body.setUserData(player);
 

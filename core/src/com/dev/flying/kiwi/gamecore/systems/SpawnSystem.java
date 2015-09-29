@@ -42,7 +42,10 @@ public class SpawnSystem extends IntervalSystem {
 
     @Override
     protected void updateInterval() {
-        Entity spawner = randomSpawner();
-        toSpawn.create(pm.get(spawner).x, pm.get(spawner).y);
+        if(entities.size() > 0) {
+            Entity spawner = randomSpawner();
+
+            toSpawn.create(pm.get(spawner).x, pm.get(spawner).y);
+        }
     }
 }
