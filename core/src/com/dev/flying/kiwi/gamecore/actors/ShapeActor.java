@@ -1,6 +1,5 @@
 package com.dev.flying.kiwi.gamecore.actors;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,8 +18,7 @@ public class ShapeActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
         batch.draw(this.textureRegion, getX() - getWidth()/2, getY() - getHeight()/2, getOriginX(), getOriginY(),
                 getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }

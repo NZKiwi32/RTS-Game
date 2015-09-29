@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class ShapeActorFactory {
     public enum Shapes {
-        CIRCLE ("hex/player_circle.png"),
+        CIRCLE ("hex/glow-circle.png"),
         RECT ("hex/player_rect.png"),
         HEX ("hex/player_hex.png"),
         PENTAGON ("hex/player_pent.png");
@@ -51,8 +51,7 @@ public class ShapeActorFactory {
         shape.setRotation(0);
         shape.setWidth(size.x);
         shape.setHeight(size.y);
-
-        shape.setColor(Color.BLACK);
+        shape.setColor(Color.WHITE);
         shape.setBounds(0, 0, shape.getWidth(), shape.getHeight());
         shape.setOrigin(shape.getWidth() / 2, shape.getHeight() / 2);
         return shape;
