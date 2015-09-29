@@ -78,15 +78,19 @@ public class PlayScreen implements Screen {
     }
 
     private void userInput() {
-
         InputMultiplexer im = new InputMultiplexer(new PlayerMouseMoveController(player), stage);
         Gdx.input.setInputProcessor(im);
     }
 
     private void ashleySystems() {
+        // Renders sprites to the Box2D Body/Fixture locations
         physicsActorRenderSystem = new PhysicsActorRenderSystem(batch);
         engine.addSystem(physicsActorRenderSystem);
+
+        // Updates the location of enemies
         engine.addSystem(new EnemyMovementSystem(Vector2.Zero));
+
+        // Switches enemies to be a part of the player on collision
         enemyCleanupSystem = new EnemyCleanupSystem(world, engine, player.getComponent(Box2DBodyComponent.class).body);
         engine.addSystem(enemyCleanupSystem);
 
@@ -105,10 +109,13 @@ public class PlayScreen implements Screen {
     }
 
     private void draw(float delta) {
-        debugRenderer.render(world, camera.combined);
+        batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
         physicsActorRenderSystem.drawRenderQueue();
         batch.end();
+
+        debugRenderer.render(world, camera.combined);
     }
 
     @Override
