@@ -13,10 +13,12 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.dev.flying.kiwi.gamecore.Settings;
 import com.dev.flying.kiwi.gamecore.ShapeGame;
 import com.dev.flying.kiwi.gamecore.collisions.ContactController;
 import com.dev.flying.kiwi.gamecore.components.Box2DBodyComponent;
 import com.dev.flying.kiwi.gamecore.input.PlayerMouseMoveController;
+import com.dev.flying.kiwi.gamecore.input.SettingToggleController;
 import com.dev.flying.kiwi.gamecore.prefabs.EnemyCreator;
 import com.dev.flying.kiwi.gamecore.prefabs.PlayerCreator;
 import com.dev.flying.kiwi.gamecore.prefabs.SpawnerCreator;
@@ -48,10 +50,12 @@ public class PlayScreen implements Screen {
     private PooledEngine engine;
     private BodyActorUpdateSystem bodyActorUpdateSystem;
     private EnemyCleanupSystem enemyCleanupSystem;
+    private Settings settings;
 
     @Override
     public void show() {
         engine = new PooledEngine();
+        settings = new Settings();
 
         /** TODO Stage should own camera and  batch call {@link Stage#getCamera()} {@link Stage#getBatch()}  */
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -80,7 +84,7 @@ public class PlayScreen implements Screen {
     }
 
     private void userInput() {
-        InputMultiplexer im = new InputMultiplexer(new PlayerMouseMoveController(player), stage);
+        InputMultiplexer im = new InputMultiplexer(new PlayerMouseMoveController(player), new SettingToggleController(settings), stage);
         Gdx.input.setInputProcessor(im);
     }
 
@@ -118,7 +122,7 @@ public class PlayScreen implements Screen {
         bodyActorUpdateSystem.drawRenderQueue(batch);
         batch.end();
 
-        debugRenderer.render(world, camera.combined);
+        if(settings.debugRender) debugRenderer.render(world, camera.combined);
     }
 
     @Override
